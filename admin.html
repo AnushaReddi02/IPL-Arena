@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - IPL Ticket Booking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+        header {
+            background-color: #162938;
+            color: #fff;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        .logo-container img {
+            width: 50px;
+            margin-right: 10px;
+        }
+        .navigation a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        .controls {
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            margin: 5px;
+            cursor: pointer;
+        }
+        footer {
+            background-color: #162938;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="https://imgs.search.brave.com/vWfyxwtw9RXYtz4tAyp2aaqTUTywm8s-8l9AwkLV6hU/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzLzg3L2E3/L2EzLzg3YTdhM2Ew/NzE3N2YxMjFhYTFj/YjBkNzJlNjE5ZTJh/LmpwZw" alt="IPL Logo">
+            <h2>IPL Arena</h2>
+        </div>
+        <nav class="navigation">
+            <a href="./Home.html">Home</a>
+            <a href="./Matches.html">Matches</a>
+            <a href="./profile.html">Profile</a>
+            <a href="./venues.html">Venues</a>
+        </nav>
+    </header>
+
+    <h1>Admin Panel - IPL Ticket Booking</h1>
+
+    <div class="controls">
+        <button onclick="redirectToSeating()">Show Layout</button>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 IPL Arena. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        function redirectToSeating() {
+            window.location.href = './admin_seating.html';
+        }
+    </script>
+</body>
+</html>

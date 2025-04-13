@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Block Tickets</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      width: 100vw;
+    }
+    .circle-container {
+      position: relative;
+      width: 80vmin;
+      height: 80vmin;
+    }
+    .circle {
+      position: absolute;
+      border: 5px solid black;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .circle-1 { width: 100%; height: 100%; background: #FFCCCC; }
+    .circle-2 { width: 80%; height: 80%; background: #CCFFCC; top: 10%; left: 10%; }
+    .circle-3 { width: 60%; height: 60%; background: #CCCCFF; top: 20%; left: 20%; }
+    .circle-4 { width: 40%; height: 40%; background: #FFFF99; top: 30%; left: 30%; }
+    .pitch {
+      position: absolute;
+      width: 15%;
+      height: 30%;
+      background: green;
+      border-radius: 20px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .seat-view {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .seats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(30px, 1fr));
+      gap: 5px;
+      width: 90vw;
+      max-width: 500px;
+      justify-content: center;
+    }
+    .seat {
+      width: 30px;
+      height: 30px;
+      border: 1px solid black;
+      text-align: center;
+      line-height: 30px;
+      cursor: pointer;
+    }
+    .selected { background: yellow; }
+    .booked { background: red; cursor: not-allowed; }
+    .total-count {
+      font-size: 18px;
+      margin-top: 10px;
+    }
+    button {
+      margin: 10px;
+      padding: 10px 15px;
+      font-size: 16px;
+      background-color: blue;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Admin - Block Tickets</h1>
+  <div class="circle-container">
+    <div class="circle circle-1" data-circle="1"></div>
+    <div class="circle circle-2" data-circle="2"></div>
+    <div class="circle circle-3" data-circle="3"></div>
+    <div class="circle circle-4" data-circle="4"></div>
+    <div class="pitch"></div>
+  </div>
+  <div id="seat-view" class="seat-view">
+    <h2>Select Seats</h2>
+    <div class="seats-container"></div>
+    <p class="total-count">Total Seats Blocked: <span id="seat-count">0</span></p>
+    <button onclick="blockSeats()">Block Selected Tickets</button>
+  </div>
+
+  <script>
+    let selectedSeats = [];
+    let bookedSeats = JSON.parse(localStorage.getItem("bookedSeats")) || [];
+
+    document.querySelectorAll('.circle[data-circle]').forEach(circle => {
+      circle.addEventListener('click', function () {
+        const circleNum = this.getAttribute('data-circle');
+        if (circleNum === "4") return;
+        showSeats(circleNum);
+      });
+    });
+
+    function showSeats(circleNum) {
+      document.querySelector('.circle-container').style.display = 'none';
+      document.getElementById('seat-view').style.display = 'flex';
+      const seatsContainer = document.querySelector('.seats-container');
+      seatsContainer.innerHTML = '';
+      selectedSeats = [];
+      updateTotalCount();
+      for (let i = 1; i <= 50; i++) {
+        const seat = document.createElement('div');
+        seat.classList.add('seat');
+        seat.innerText = i;
+        if (bookedSeats.includes(i)) {
+          seat.classList.add('booked');
+        }
+        seat.addEventListener('click', function () {
+          if (!this.classList.contains('booked')) {
+            this.classList.toggle('selected');
+            if (this.classList.contains('selected')) {
+              selectedSeats.push(i);
+            } else {
+              selectedSeats = selectedSeats.filter(s => s !== i);
+            }
+            updateTotalCount();
+          }
+        });
+        seatsContainer.appendChild(seat);
+      }
+    }
+
+    function updateTotalCount() {
+      document.getElementById('seat-count').innerText = selectedSeats.length;
+    }
+
+    function blockSeats() {
+      if (selectedSeats.length === 0) {
+        alert("Please select seats to block.");
+        return;
+      }
+      bookedSeats = [...new Set([...bookedSeats, ...selectedSeats])];
+      localStorage.setItem("bookedSeats", JSON.stringify(bookedSeats));
+
+      alert(`Blocked ${selectedSeats.length} seats successfully!`);
+      window.admin.reload();
+    }
+
+    function blockSeats() {
+    if (selectedSeats.length === 0) {
+        alert("Please select seats to block.");
+        return;
+    }
+    bookedSeats = [...new Set([...bookedSeats, ...selectedSeats])];
+    localStorage.setItem("bookedSeats", JSON.stringify(bookedSeats));
+
+    alert(`Blocked ${selectedSeats.length} seats successfully!`);
+    window.location.href = './admin.html'; // Redirect to Admin Panel
+}
+
+  </script>
+</body>
+</html>
